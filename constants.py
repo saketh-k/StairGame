@@ -1,0 +1,6 @@
+
+HEIGHT = 720 # Height
+WIDTH = 720 # Width
+NBOXES = 4 # NBOXES
+NPLAYERS = 2 # Number of Agents
+BOXSIZE = HEIGHT/NBOXES
