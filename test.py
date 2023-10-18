@@ -1,5 +1,5 @@
 import time
-import stair_world
+import stair_world.stair_world
 import gymnasium
 import numpy as np
 from stable_baselines3.common.env_checker import check_env
@@ -10,14 +10,14 @@ import imageio
 
 env = gymnasium.make("StairWorld-v0", render_mode="rgb_array")
 env = NormalizeReward(env)
-# print(env.reset(seed=22))
-# model = A2C('MultiInputPolicy', env, verbose=1).learn(total_timesteps=1e5)
-# mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
-# print(f'The mean reward was {mean_reward} and the standard deviation was {std_reward}.')
+print(env.reset(seed=22))
+model = A2C('MultiInputPolicy', env, verbose=1).learn(total_timesteps=1e6)
+mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
+print(f'The mean reward was {mean_reward} and the standard deviation was {std_reward}.')
 #check_env(env, skip_render_check=False)
 
-# model.save("a2c_stair")
-# del model
+model.save("a2c_stair")
+del model
 
 model = A2C.load("a2c_stair")
 

@@ -19,15 +19,15 @@ class StairTrain(gym.Env):
                     "goal": spaces.Box(0, size - 1, shape=(2,), dtype=int)
                 }
             )
-        self.action_space = spaces.Discrete(5)
+        self.action_space = spaces.Discrete(9) 
 
 
         self._action_to_direction = {
-            0: np.array([1, 0]),
-            1: np.array([0, 1]),
-            2: np.array([-1, 0]),
-            3: np.array([0, -1]),
-            4: np.array([0, 0]), # allow for someone to not move at all
+            0: np.array([0, 0]), # allow for someone to not move at all
+            1: np.array([1, 0]),
+            2: np.array([0, 1]),
+            3: np.array([-1, 0]),
+            4: np.array([0, -1]),
         }
 
         assert render_mode is None or render_mode in self.metadata["render_modes"]
@@ -86,8 +86,11 @@ class StairTrain(gym.Env):
 
     def step(self, action):
         # make the things move, making sure they don't go out of bounds or go into an obstacle illegally
-        direction = self._action_to_direction[int(action)]
+        # direction = self._action_to_direction[int(action%5)]
+        # helper_dir = self._action_to_direction[int(action//5)]
 
+        direction = self._action_to_direction[int(max(action-5,0))]
+        helper_dir = self._action_to_direction[int(action if action < 5 else 0)]
         #handle bounds and obstacles
 
         # self._agent_location = np.clip(
@@ -100,9 +103,13 @@ class StairTrain(gym.Env):
                 self._agent_location + direction, 0, self.size - 1
             )
 
+        if not np.array_equal(self._helper_location + helper_dir, self._obstacle_location):
+            self._helper_location = np.clip(
+                self._helper_location + helper_dir, 0, self.size - 1
+            )
+
+
         elif np.array_equal(self._agent_location, self._helper_location):
-#        if self._agent_location == self._helper_location: 
-            #it can go wherever it wants if it's on a step
             self._agent_location = np.clip(
                 self._agent_location + direction, 0, self.size - 1
             )
