@@ -6,11 +6,15 @@ from stable_baselines3 import DQN
 
 env = gymnasium.make("StairWorld-v0")
 
-model = DQN('MultiInputPolicy', env).learn(total_timesteps=1e6)
+model = DQN('MultiInputPolicy', env, verbose=1).learn(total_timesteps=1e5)
 mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
 print(f'The mean reward was {mean_reward} and the standard deviation was {std_reward}.')
 #check_env(env, skip_render_check=False)
 
+model.save("dqn_stair")
+del model
+
+model = DQN.load("dqn_stair")
 obs = env.reset()
 for i in range(1000):
     action, _states = model.predict(obs)

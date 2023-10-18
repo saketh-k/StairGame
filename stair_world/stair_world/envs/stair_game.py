@@ -15,7 +15,7 @@ class StairTrain(gym.Env):
                     "agent": spaces.Box(0, size - 1, shape=(2,), dtype=int),
                     "helper": spaces.Box(0, size - 1, shape=(2,), dtype=int),
                     "obstacle": spaces.Box(0, size - 1, shape=(2,), dtype=int),
-                    "goal": spaces.Box(0, size - 1, shape=(2,), dtype=int),
+                    "goal": spaces.Box(0, size - 1, shape=(2,), dtype=int)
                 }
             )
         self.action_space = spaces.Discrete(5)
